@@ -43,11 +43,11 @@ const MIN_ERC20_ABI = [
 ]
 const tokenContract = new ethers.Contract(TOKEN_ADDRESS, MIN_ERC20_ABI, wallet)
 
-// 正式环境 CORS 配置
+// 修复跨域问题：允许所有来源访问，并支持常用的请求头
 app.use(cors({
-  origin: ["https://snowkoi.top", "https://www.snowkoi.top"],
-  methods: ["GET", "POST"],
-  credentials: true
+  origin: "*", // 允许所有来源，解决线上域名匹配问题
+  methods: ["GET", "POST", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
 }))
 
 app.use(express.json())
