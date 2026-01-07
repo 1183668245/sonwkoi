@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>雪球效应 Snowchain</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- 顶部导航栏 -->
+        <header class="navbar">
+            <div class="logo"><img src="logo1.png" alt="SnowChain Logo" class="logo-img"></div>
+            <div class="nav-right">
+                <a href="https://x.com/snowkoi_bsc" target="_blank" class="nav-icon" aria-label="Twitter">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M4 4L20 20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M20 4L4 20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </a>
+                <a href="https://t.me/snowkoi_bsc" target="_blank" class="nav-icon" aria-label="Telegram">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M21 3L3 11l7 2 2 7 9-17z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                    </svg>
+                </a>
+                <button class="wallet-btn">连接钱包</button>
+            </div>
+        </header>
+
+        <!-- 中奖信息滚动横幅 -->
+        <div class="winner-marquee">
+            <div class="marquee-content">
+                🎉 欢迎参与雪球效应！期待本轮幸运儿诞生...
+            </div>
+        </div>
+
+        <!-- 中间主区域 -->
+        <main class="main-content">
+            <h1 class="slogan">让财富像雪球一样越滚越大</h1>
+            
+            <div class="snowball-wrapper">
+                <img src="snow/雪团.png" alt="雪团" class="snowball-img">
+            </div>
+
+            <button class="boost-btn">❄️ 助力雪球 ❄️</button>
+
+            <details class="rules-box">
+                <summary>玩法规则</summary>
+                <ul>
+                    <li>1. 点击按钮1万枚$SNOWKOI助力雪球</li>
+                    <li>2. 每轮2%的BNB税收购入$SNOWKOI注入奖池，1%回流</li>
+                    <li>3. 每15分钟开奖一次，中奖者自动获得当前奖池</li>
+                </ul>
+            </details>
+        </main>
+
+        <!-- 代币余额 -->
+        <section class="info-card balance-card">
+            <h2>我的代币余额</h2>
+            <div class="balance-amount">0.00 <span class="currency">SNOWKOI</span></div>
+        </section>
+
+        <!-- 倒计时区域 -->
+        <section class="info-card countdown-card">
+            <h2>距离开奖倒计时</h2>
+            <div class="countdown-timer">
+                <div class="time-unit">
+                    <span class="num">08</span>
+                    <span class="label">小时</span>
+                </div>
+                <div class="separator">:</div>
+                <div class="time-unit">
+                    <span class="num">45</span>
+                    <span class="label">分钟</span>
+                </div>
+                <div class="separator">:</div>
+                <div class="time-unit">
+                    <span class="num">12</span>
+                    <span class="label">秒</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 奖池信息 -->
+        <section class="info-card stats-card">
+            <div class="stat-item">
+                <h3>当前奖池</h3>
+                <p class="stat-value" id="total-prize">0</p>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+                <h3>分红奖池</h3>
+                <p class="stat-value bonus-value" id="bonus-prize">0</p>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+                <h3>参与人数</h3>
+                <p class="stat-value" id="participant-count">0</p>
+            </div>
+        </section>
+
+        <!-- 往期中奖 -->
+        <section class="history-section">
+            <h2>🏆 往期中奖地址</h2>
+            <div class="history-list">
+                <div class="history-item">
+                    <span class="address">0x1234...abcd</span>
+                    <span class="prize">5,000 SNOWKOI</span>
+                </div>
+                <div class="history-item">
+                    <span class="address">0x5678...efgh</span>
+                    <span class="prize">3,000 SNOWKOI</span>
+                </div>
+                <div class="history-item">
+                    <span class="address">0x90ab...ijkl</span>
+                    <span class="prize">2,000 SNOWKOI</span>
+                </div>
+                <div class="history-item">
+                    <span class="address">0xcdef...mnop</span>
+                    <span class="prize">1,000 SNOWKOI</span>
+                </div>
+            </div>
+        </section>
+    </div>
+    <script src="wallet.js"></script>
+</body>
+</html>
