@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>雪球锦鲤 - 管理后台</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; background: #f0f4f8; }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); max-width: 400px; margin: 0 auto; }
+        h2 { color: #0066cc; margin-top: 0; }
+        input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+        button { width: 100%; padding: 10px; background: #0066cc; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #0052a3; }
+        #admin-panel { display: none; }
+        .logout { background: #ff4d4f; margin-top: 10px; }
+        .stats { margin-bottom: 20px; padding: 15px; background: #f8f9fa; border-radius: 6px; border-left: 4px solid #0066cc; }
+        .stats p { margin: 5px 0; font-size: 16px; }
+        hr { border: 0; border-top: 1px solid #eee; margin: 20px 0; }
+    </style>
+</head>
+<body>
+
+    <div id="login-form" class="card">
+        <h2>管理员登录</h2>
+        <input type="text" id="user" placeholder="用户名">
+        <input type="password" id="pass" placeholder="密码">
+        <button onclick="login()">登录</button>
+    </div>
+
+    <div id="admin-panel" class="card">
+        <h2>奖池管理</h2>
+        <div class="stats">
+            <p>总奖池金额: <span id="current-prize" style="font-weight: bold; color: #ff9900;">0</span></p>
+            <p>分红奖池金额: <span id="bonus-prize" style="font-weight: bold; color: #ff4d4f;">0</span></p>
+            <p>当前参与人数: <span id="current-participants" style="font-weight: bold; color: #00cc66;">0</span></p>
+        </div>
+        <hr>
+        <p>手动增加奖金：</p>
+        <input type="number" id="prize-amount" placeholder="增加金额 (如: 50000)">
+        <button onclick="updatePrize()">确认增加</button>
+        <button class="logout" onclick="logout()">退出登录</button>
+    </div>
+
+    <script>
+        let adminToken = localStorage.getItem("adminToken");
+        let refreshInterval = null;
+
+        if (adminToken) {
+            showPanel();
+            startStatsRefresh();
+        }
+
+        async function login() {
+            const user = document.getElementById("user").value;
+            const pass = document.getElementById("pass").value;
+            const res = await fetch("/api/admin/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ user, pass })
+            });
+            const data = await res.json();
+            if (data.success) {
+                adminToken = data.token;
+                localStorage.setItem("adminToken", adminToken);
+                showPanel();
+                startStatsRefresh();
+            } else {
+                alert(data.error);
+            }
+        }
+
+        function showPanel() {
+            document.getElementById("login-form").style.display = "none";
+            document.getElementById("admin-panel").style.display = "block";
+        }
+
+        async function updatePrize() {
+            const amount = document.getElementById("prize-amount").value;
+            if (!amount) return alert("请输入金额");
+            const res = await fetch("/api/admin/update-prize", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ token: adminToken, amount })
+            });
+            const data = await res.json();
+            if (data.success) {
+                alert("修改成功！");
+                document.getElementById("prize-amount").value = "";
+                fetchStats(); // 立即刷新数据
+            } else {
+                alert(data.error);
+            }
+        }
+
+        async function fetchStats() {
+            try {
+                const res = await fetch("/api/current-round");
+                const data = await res.json();
+                if (data && !data.error) {
+                    document.getElementById("current-prize").textContent = data.prize_amount;
+                    document.getElementById("bonus-prize").textContent = data.bonus_amount || 0;
+                    document.getElementById("current-participants").textContent = data.participant_count;
+                }
+            } catch (err) {
+                console.error("刷新数据失败:", err);
+            }
+        }
+
+        function startStatsRefresh() {
+            fetchStats();
+            if (refreshInterval) clearInterval(refreshInterval);
+            refreshInterval = setInterval(fetchStats, 5000); // 每5秒刷新一次
+        }
+
+        function logout() {
+            localStorage.removeItem("adminToken");
+            if (refreshInterval) clearInterval(refreshInterval);
+            location.reload();
+        }
+    </script>
+</body>
+</html>
