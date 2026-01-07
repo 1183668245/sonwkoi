@@ -9,14 +9,45 @@ const { ethers } = require("ethers")
 const app = express()
 const PORT = process.env.PORT || 3000
 
-// 从环境变量获取配置
-const RPC_URL = process.env.RPC_URL
+// 1. 【最优先级】立即启用 CORS
+app.use(cors({
+  origin: "*",
+  methods: ["GET", "POST", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}))
+app.use(express.json())
+
+// 2. 校验关键环境变量，防止崩溃
+const requiredEnvs = ['RPC_URL', 'TOKEN_ADDRESS', 'ADMIN_PRIVATE_KEY', 'ADMIN_USER', 'ADMIN_PASS'];
+const missingEnvs = requiredEnvs.filter(env => !process.env[env]);
+
+if (missingEnvs.length > 0) {
+  console.error("【致命错误】缺少环境变量:", missingEnvs.join(", "));
+}
+
+// 获取配置
 const TOKEN_ADDRESS = process.env.TOKEN_ADDRESS
 const COLLECTION_ADDRESS = process.env.COLLECTION_ADDRESS
-const ADMIN_PRIVATE_KEY = process.env.ADMIN_PRIVATE_KEY
 const ADMIN_USER = process.env.ADMIN_USER
 const ADMIN_PASS = process.env.ADMIN_PASS
 const ADMIN_PATH = process.env.ADMIN_PATH || "secret-admin-portal" 
+
+// 3. 安全初始化 ethers (封装在 try-catch 中)
+let wallet, tokenContract;
+try {
+  if (!missingEnvs.length) {
+    const provider = new ethers.JsonRpcProvider(process.env.RPC_URL)
+    wallet = new ethers.Wallet(process.env.ADMIN_PRIVATE_KEY, provider)
+    const MIN_ERC20_ABI = [
+      "function transfer(address to, uint256 amount) public returns (bool)",
+      "function decimals() view returns (uint8)"
+    ]
+    tokenContract = new ethers.Contract(TOKEN_ADDRESS, MIN_ERC20_ABI, wallet)
+    console.log("Web3 钱包初始化成功");
+  }
+} catch (e) {
+  console.error("Web3 初始化失败:", e.message);
+}
 
 // --- 管理员页面路由 (放在 API 之前) ---
 app.get(`/${ADMIN_PATH}`, (req, res) => {
@@ -30,27 +61,6 @@ app.get(`/${ADMIN_PATH}`, (req, res) => {
   });
 });
 console.log(`管理后台路径已设置为: /${ADMIN_PATH}`)
-
-app.use(express.json())
-// 初始化 ethers 供应商和钱包
-const provider = new ethers.JsonRpcProvider(RPC_URL)
-const wallet = new ethers.Wallet(ADMIN_PRIVATE_KEY, provider)
-
-// ERC20 最小 ABI 用于转账
-const MIN_ERC20_ABI = [
-  "function transfer(address to, uint256 amount) public returns (bool)",
-  "function decimals() view returns (uint8)"
-]
-const tokenContract = new ethers.Contract(TOKEN_ADDRESS, MIN_ERC20_ABI, wallet)
-
-// 修复跨域问题：允许所有来源访问，并支持常用的请求头
-app.use(cors({
-  origin: "*", // 允许所有来源，解决线上域名匹配问题
-  methods: ["GET", "POST", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"]
-}))
-
-app.use(express.json())
 
 const dbPath = path.join(__dirname, "lottery.db")
 const db = new sqlite3.Database(dbPath)
