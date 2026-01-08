@@ -7,14 +7,15 @@ const cors = require("cors")
 const { ethers } = require("ethers")
 
 const app = express()
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 8080
 
-// 1. 【最优先级】立即启用 CORS
+// 生产环境安全配置：仅允许正式前端域名访问
 app.use(cors({
-  origin: "*",
+  origin: "https://snowkoi.top",
   methods: ["GET", "POST", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"]
+  credentials: true
 }))
+
 app.use(express.json())
 
 // 2. 校验关键环境变量，防止崩溃
