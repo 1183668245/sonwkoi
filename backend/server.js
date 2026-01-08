@@ -7,11 +7,12 @@ const cors = require("cors")
 const { ethers } = require("ethers")
 
 const app = express()
-const PORT = process.env.PORT || 8080
+// 自动去掉环境变量中可能存在的引号
+const PORT = (process.env.PORT || "8080").replace(/["']/g, "")
 
-// 生产环境安全配置：仅允许正式前端域名访问
+// 生产环境严谨 CORS 配置
 app.use(cors({
-  origin: "https://snowkoi.top",
+  origin: ["https://snowkoi.top", "https://www.snowkoi.top"], 
   methods: ["GET", "POST", "OPTIONS"],
   credentials: true
 }))
