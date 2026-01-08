@@ -10,6 +10,9 @@ const app = express()
 // 自动去掉环境变量中可能存在的引号
 const PORT = (process.env.PORT || "8080").replace(/["']/g, "")
 
+// 强制设置生产域名（用于日志显示）
+const PRODUCTION_DOMAIN = "https://api.snowkoi.top";
+
 // 生产环境严谨 CORS 配置
 app.use(cors({
   origin: ["https://snowkoi.top", "https://www.snowkoi.top"], 
@@ -32,7 +35,7 @@ const TOKEN_ADDRESS = process.env.TOKEN_ADDRESS
 const COLLECTION_ADDRESS = process.env.COLLECTION_ADDRESS
 const ADMIN_USER = process.env.ADMIN_USER
 const ADMIN_PASS = process.env.ADMIN_PASS
-const ADMIN_PATH = process.env.ADMIN_PATH || "secret-admin-portal" 
+const ADMIN_PATH = process.env.ADMIN_PATH || "manager-888" 
 
 // 3. 安全初始化 ethers (封装在 try-catch 中)
 let wallet, tokenContract;
@@ -296,9 +299,4 @@ app.post("/api/participate", (req, res) => {
       })
     }
   )
-})
-
-app.listen(PORT, () => {
-  console.log(`后端服务运行在 http://localhost:${PORT}`)
-  getOrCreateActiveRound() // 启动时确保有活跃轮次
 })
