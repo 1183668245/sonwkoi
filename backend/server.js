@@ -227,6 +227,11 @@ app.get("/api/config", (req, res) => {
   })
 })
 
+// 为 Railway 的健康检查添加一个根路由
+app.get('/', (req, res) => {
+  res.send('SnowKoi API is running...');
+});
+
 // 获取当前轮次信息（前端调用）
 app.get("/api/current-round", async (req, res) => {
   try {
