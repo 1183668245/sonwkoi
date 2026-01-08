@@ -300,3 +300,14 @@ app.post("/api/participate", (req, res) => {
     }
   )
 })
+
+// 强制监听 0.0.0.0 (修复 Railway 502 错误的关键)
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`\n=========================================`);
+  console.log(`🚀 服务启动成功！`);
+  console.log(`🌐 生产环境接口: ${PRODUCTION_DOMAIN}/api`);
+  console.log(`🔐 管理后台地址: ${PRODUCTION_DOMAIN}/${ADMIN_PATH}`);
+  console.log(`🏠 内部转发端口: ${PORT}`);
+  console.log(`=========================================\n`);
+  getOrCreateActiveRound() // 启动时确保有活跃轮次
+})
