@@ -1,6 +1,7 @@
 let currentAccount = null
 let TOKEN_ADDRESS = "";
 let COLLECTION_ADDRESS = "";
+// 生产环境 API 地址
 const API_BASE = "https://api.snowkoi.top/api";
 let currentRound = null;
 
@@ -181,8 +182,17 @@ function updateCountdown(endTimeStr) {
         const diff = endTime - now;
 
         if (diff <= 0) {
-            clearInterval(countdownInterval);
-            fetchCurrentRound(); // 时间到，尝试刷新
+            if (countdownInterval) clearInterval(countdownInterval);
+            
+            const nums = document.querySelectorAll(".countdown-timer .num");
+            if (nums.length >= 3) {
+                nums[0].textContent = "00";
+                nums[1].textContent = "00";
+                nums[2].textContent = "00";
+            }
+
+            console.log("倒计时结束，3秒后刷新轮次信息...");
+            setTimeout(fetchCurrentRound, 3000); // 延迟刷新，避免死循环
             return;
         }
 
@@ -197,8 +207,14 @@ function updateCountdown(endTimeStr) {
             nums[2].textContent = s.toString().padStart(2, '0');
         }
     };
-    update();
-    countdownInterval = setInterval(update, 1000);
+
+    // 如果时间已到，直接执行并不启动定时器
+    if (endTime - new Date().getTime() <= 0) {
+        update();
+    } else {
+        update();
+        countdownInterval = setInterval(update, 1000);
+    }
 }
 
 async function fetchHistory() {
