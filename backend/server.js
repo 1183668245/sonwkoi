@@ -133,7 +133,7 @@ async function drawWinner(roundId) {
       db.all("SELECT user_address FROM participants WHERE round_id = ?", [roundId], async (err, rows) => {
         if (err) return reject(err)
         
-        let winner = "No participants"
+        let winner = "无人参与"
         if (rows.length > 0) {
           const randomIndex = Math.floor(Math.random() * rows.length)
           winner = rows[randomIndex].user_address
