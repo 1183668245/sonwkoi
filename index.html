@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -12,7 +12,7 @@
         <header class="navbar">
             <div class="logo"><img src="logo1.png" alt="SnowChain Logo" class="logo-img"></div>
             <div class="nav-right">
-                <a href="https://x.com/snowchain_sol" target="_blank" class="nav-icon" aria-label="Twitter">
+                <a href="https://x.com/snowkoi_bsc" target="_blank" class="nav-icon" aria-label="Twitter">
                     <svg viewBox="0 0 24 24" aria-hidden="true">
                         <path d="M4 4L20 20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                         <path d="M20 4L4 20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
@@ -23,87 +23,85 @@
                         <path d="M21 3L3 11l7 2 2 7 9-17z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
                     </svg>
                 </a>
-                <button class="wallet-btn">Connect Wallet</button>
+                <button class="wallet-btn">连接钱包</button>
             </div>
         </header>
 
-        <!-- Winner Marquee -->
+        <!-- 中奖信息滚动横幅 -->
         <div class="winner-marquee">
             <div class="marquee-content">
-                🎉 Welcome to Snowchain! Waiting for the winner...
+                🎉 欢迎参与雪球效应！期待本轮幸运儿诞生...
             </div>
         </div>
 
-        <!-- Main Content -->
+        <!-- 中间主区域 -->
         <main class="main-content">
-            <h1 class="slogan">Let Your Wealth Snowball</h1>
+            <h1 class="slogan">让财富像雪球一样越滚越大</h1>
             
             <div class="snowball-wrapper">
-                <img src="snow/雪团.png" alt="Snowball" class="snowball-img">
+                <img src="snow/雪团.png" alt="雪团" class="snowball-img">
             </div>
 
-            <button class="boost-btn">❄️ Boost Snowball ❄️</button>
+            <button class="boost-btn">❄️ 助力雪球 ❄️</button>
 
             <details class="rules-box">
-                <summary>Rules</summary>
+                <summary>玩法规则</summary>
                 <ul>
-                    <li>1. Click button to boost with 10,000 $SNOWKOI</li>
-                    <li>2. Participation disabled during Pump internal phase</li>
-                    <li>3. Lottery draws every 15 minutes, winner takes current pool</li>
+                    <li>1. 点击按钮1万枚$SNOWKOI助力雪球</li>
+                    <li>2. pump内盘阶段无法参与</li>
+                    <li>3. 每15分钟开奖一次，中奖者自动获得当前奖池</li>
                 </ul>
             </details>
         </main>
 
-        <!-- Token Balance -->
+        <!-- 代币余额 -->
         <section class="info-card balance-card">
-            <h2>My Token Balance</h2>
-
+            <h2>我的代币余额</h2>
             <div class="balance-amount">0.00 <span class="currency">SNOWCHAIN</span></div>
         </section>
 
-        <!-- Countdown Area -->
+        <!-- 倒计时区域 -->
         <section class="info-card countdown-card">
-            <h2>Lottery Countdown</h2>
+            <h2>距离开奖倒计时</h2>
             <div class="countdown-timer">
                 <div class="time-unit">
                     <span class="num">08</span>
-                    <span class="label">Hours</span>
+                    <span class="label">小时</span>
                 </div>
                 <div class="separator">:</div>
                 <div class="time-unit">
                     <span class="num">45</span>
-                    <span class="label">Mins</span>
+                    <span class="label">分钟</span>
                 </div>
                 <div class="separator">:</div>
                 <div class="time-unit">
                     <span class="num">12</span>
-                    <span class="label">Secs</span>
+                    <span class="label">秒</span>
                 </div>
             </div>
         </section>
 
-        <!-- Pool Info -->
+        <!-- 奖池信息 -->
         <section class="info-card stats-card">
             <div class="stat-item">
-                <h3>Current Pool</h3>
+                <h3>当前奖池</h3>
                 <p class="stat-value" id="total-prize">0</p>
             </div>
             <div class="stat-divider"></div>
             <div class="stat-item">
-                <h3>Dividend Pool</h3>
+                <h3>分红奖池</h3>
                 <p class="stat-value bonus-value" id="bonus-prize">0</p>
             </div>
             <div class="stat-divider"></div>
             <div class="stat-item">
-                <h3>Participants</h3>
+                <h3>参与人数</h3>
                 <p class="stat-value" id="participant-count">0</p>
             </div>
         </section>
 
-        <!-- History -->
+        <!-- 往期中奖 -->
         <section class="history-section">
-            <h2>🏆 Previous Winners</h2>
-
+            <h2>🏆 往期中奖地址</h2>
             <div class="history-list">
                 <div class="history-item">
                     <span class="address">0x1234...abcd</span>
