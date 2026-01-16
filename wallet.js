@@ -34,8 +34,8 @@ const ERC20_ABI = [
 ];
 
 function shortenAddress(a){return a?a.slice(0,6)+"..."+a.slice(-4):""}
+function updateButton(addr){const b=document.querySelector(".wallet-btn");if(!b)return;if(addr){const s=shortenAddress(addr);b.textContent=s;b.title=addr;b.setAttribute("data-address",addr)}else{b.textContent="连接钱包";b.removeAttribute("data-address");b.removeAttribute("title");updateBalanceDisplay("0.00")}}
 
-function updateButton(addr){const b=document.querySelector(".wallet-btn");if(!b)return;if(addr){const s=shortenAddress(addr);b.textContent=s;b.title=addr;b.setAttribute("data-address",addr)}else{b.textContent="Connect Wallet";b.removeAttribute("data-address");b.removeAttribute("title");updateBalanceDisplay("0.00")}}
 function updateBalanceDisplay(amount) {
     const el = document.querySelector(".balance-amount");
     if (el) el.innerHTML = `${amount} <span class="currency">SNOWKOI</span>`;
